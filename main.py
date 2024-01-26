@@ -1,19 +1,20 @@
+import os
+import json
+import tiktoken
+
 import vector_db_helper.vector_db as db
 import vector_db_helper.embedding_builder as embed
 
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.embeddings import OpenAIEmbeddings
 
-import langchain.chains as chains
 import langchain.prompts as prompts
-import os
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-import tiktoken
-from langchain.embeddings import OpenAIEmbeddings
 from langchain.callbacks.streaming_stdout_final_only import (
     FinalStreamingStdOutCallbackHandler,
 )
 
-import json
 import data_model.input_model as inmodel
 import data_model.output_format as outmodel
 import utils.util as utils
@@ -106,6 +107,7 @@ def run():
     prompt = load_prompt()
     questions = load_question()
     results = []
+    vector_db = load_openai_db(root_path + "example/db")
 
     for question in questions:
         try:
@@ -128,18 +130,18 @@ def run():
             )
 
             results.append(output)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
-    with open(root_path + "result.json", "w") as f:
+    with open(root_path + "result.json", "w", encoding="utf-8") as f:
         json.dump(results, default=outmodel.convert_to_dict,
                   fp=f, ensure_ascii=False)
 
 
 def chain(store: db.VectorDB, llm, prompt, question: str):
     rag, relevance = store.query(question)
-    input = prompt.format(rag=rag, question=question)
-    result = llm.predict(input)
+    input_prompt = prompt.format(rag=rag, question=question)
+    result = llm.predict(input_prompt)
     return result, rag, relevance
 
 

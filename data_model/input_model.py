@@ -4,7 +4,7 @@ import gspread as gsp
 
 class ModelLoadStregyBase():
     def __init__(self) -> None:
-        self._data = None
+        pass
 
     def load(self):
         pass
@@ -37,7 +37,6 @@ class GoogleLoader(ModelLoadStregyBase):
         document = gc.open_by_url(self.file_path)
         sheet = document.get_worksheet(self.sheet_index)
         data = sheet.get_all_records()
-        print(data)
         return data
 
 

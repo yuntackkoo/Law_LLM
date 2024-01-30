@@ -1,6 +1,7 @@
 import os
 import json
 import tiktoken
+import dataclasses
 
 import vector_db_helper.vector_db as db
 import vector_db_helper.embedding_builder as embed
@@ -135,7 +136,7 @@ def run():
       print(e)
 
   with open(root_path + "result.json", "w", encoding="utf-8") as f:
-    json.dump(results, default=outmodel.convert_to_dict,
+    json.dump(results, default=dataclasses.asdict,
               fp=f, ensure_ascii=False)
 
 

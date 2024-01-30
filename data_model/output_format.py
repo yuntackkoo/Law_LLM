@@ -1,4 +1,5 @@
 import json
+from dataclasses import dataclass
 
 
 class OutputFormatEncoder(json.JSONEncoder):
@@ -16,27 +17,12 @@ class OutputFormatEncoder(json.JSONEncoder):
     return super(OutputFormatEncoder, self).default(o)
 
 
-def convert_to_dict(obj):
-  if isinstance(obj, OutputFormat):
-    return obj.__dict__
-  return obj
-
-
+@dataclass
 class OutputFormat:
-  def __init__(
-      self,
-      question_number: str,
-      question: str,
-      gt_number: list[int],
-      predict_number: list[int],
-      predict_solution: str,
-      rag_confidence: float,
-      rag_content: str,
-  ) -> None:
-    self.question_number = question_number
-    self.question = question
-    self.gt_number = gt_number
-    self.predict_number = predict_number
-    self.predict_solution = predict_solution
-    self.rag_confidence = rag_confidence
-    self.rag_content = rag_content
+  question_number: str
+  question: str
+  gt_number: list[int]
+  predict_number: list[int]
+  predict_solution: str
+  rag_confidence: float
+  rag_content: str

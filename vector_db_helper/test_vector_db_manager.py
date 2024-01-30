@@ -15,10 +15,10 @@ single_object_json_test_str = '''
 
 
 def test_get_meta_from_json():
-    origin = manager.VectorDBMetadata("Object1", "/remote/path1",
-                                      "/local/path1",
-                                      "Model1",
-                                      "Type1", "Description for Object1")
-    json_data = json.loads(single_object_json_test_str)[0]
-    obj = manager.get_meta_from_json(json_data)
-    assert origin == obj
+  origin = manager.VectorDBMetadata("Object1", "/remote/path1",
+                                    "/local/path1",
+                                    "Model1",
+                                    "Type1", "Description for Object1")
+  json_data = json.loads(single_object_json_test_str)[0]
+  obj = manager.get_meta_from_json(json_data)
+  assert origin == obj
